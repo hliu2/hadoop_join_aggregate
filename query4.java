@@ -15,22 +15,21 @@ import java.lang.*;
 public class query4{
 	public static class CustomerMap extends MapReduceBase implements Mapper<LongWritable, Text, IntWritable, Text> {
 		
-		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException{
+		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, 
+		Reporter reporter) throws IOException{
 			String line = value.toString();
 			String[] record = line.split(",");
-			
-			
 			int CustID = Integer.parseInt(record[0]);
 			IntWritable output_key = new IntWritable(CustID);
                         Text output_value = new Text("A,"+record[3]+",1");
                         output.collect(new IntWritable(CustID),output_value);
-			
 		}
 	}
 	
 	public static class TransactionsMap extends MapReduceBase implements Mapper<LongWritable, Text, IntWritable, Text> {
 		
-		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException{
+		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, 
+		Reporter reporter) throws IOException{
 			String line = value.toString();
 			String[] record = line.split(",");
 			int CustID = Integer.parseInt(record[1]);
@@ -39,18 +38,16 @@ public class query4{
                         output.collect(new IntWritable(CustID),output_value);
 		}
 	}
-
-
 	
 	public static class Reduce1 extends MapReduceBase implements Reducer<IntWritable, Text, IntWritable, Text> {
-		public void reduce(IntWritable key, Iterator<Text> values, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException {
+		public void reduce(IntWritable key, Iterator<Text> values, OutputCollector<IntWritable, Text> output, 
+		Reporter reporter) throws IOException {
 			 float TransTotal = 0.0f;
 			 float MinTransTotal=1000f;
 			 float MaxTransTotal=10f;
 			 int NumP=0;
 			 int CountryCode =0;
 			 
-                         
 			 while (values.hasNext()) {
 				 String line = values.next().toString();
 				 String[] record = line.split(",");
@@ -69,27 +66,28 @@ public class query4{
 	 			 
 			 }
 
-            String output_value = CountryCode +","+NumP +","+ MinTransTotal+","+ MaxTransTotal ;
-			 
+                         String output_value = CountryCode +","+NumP +","+ MinTransTotal+","+ MaxTransTotal ;
 			 output.collect(key, new Text(output_value));
 		}
 	}
 	
-public static class SecondMap extends MapReduceBase implements Mapper<LongWritable, Text, IntWritable, Text> {
-		
-		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException{
+        public static class SecondMap extends MapReduceBase implements Mapper<LongWritable, Text, IntWritable, Text> {
+		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, 
+		Reporter reporter) throws IOException{
 			String line = value.toString();
 			String[] record = line.split("\t");
 			String record_value = record[1];
                         String[] record_value_items = record_value.split(",");
  			int CountryCode = Integer.parseInt(record_value_items[0]);
 			IntWritable output_key = new IntWritable(CountryCode);
-            Text output_value = new Text(record_value_items[0]+","+record_value_items[1]+","+record_value_items[2]);
-            output.collect(new IntWritable(CountryCode),output_value);
+                        Text output_value = new Text(record_value_items[0]+","+record_value_items[1]+","+
+                        record_value_items[2]);
+                        output.collect(new IntWritable(CountryCode),output_value);
 		}
 	}
 	public static class Reduce2 extends MapReduceBase implements Reducer<IntWritable, Text, IntWritable, Text> {
-		public void reduce(IntWritable key, Iterator<Text> values, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException {
+		public void reduce(IntWritable key, Iterator<Text> values, OutputCollector<IntWritable, Text> output, 
+		Reporter reporter) throws IOException {
 			 int MumPerson =0;
 			 Float MinTransTotal=1000f;
 			 Float MaxTransTotal=10f;
@@ -111,8 +109,7 @@ public static class SecondMap extends MapReduceBase implements Mapper<LongWritab
 				 }
 			 }
 
-            String output_value = MumPerson +","+ MinTransTotal+ ","+ MaxTransTotal;
-			 
+                        String output_value = MumPerson +","+ MinTransTotal+ ","+ MaxTransTotal;
 			 output.collect(key,new Text(output_value));
 		}
 	}
@@ -156,8 +153,6 @@ public static class SecondMap extends MapReduceBase implements Mapper<LongWritab
 		 FileOutputFormat.setOutputPath(conf2, outputPath);
 		 
 		 JobClient.runJob(conf2);
-
-
 		
 	}
 }
