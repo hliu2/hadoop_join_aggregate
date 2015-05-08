@@ -9,5 +9,5 @@
 ## Dateset Information
 * Customer dataset: each line contains: CustID, Name, Age, CountryCode, Salary.   
 * Transactions dataset: each line contains: TransID, CustID, TransTotal, TransNumItems, TransDesc.
-* reports for every country code the number of customers having this code as well as the min and max of TransTotal fields for the transactions done by those customers. 
+* Objective: reports for every country code the number of customers having this code as well as the min and max of TransTotal fields for the transactions done by those customers. 
 
