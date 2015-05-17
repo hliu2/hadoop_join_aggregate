@@ -41,13 +41,16 @@ public class query4_1{
 						String [] cust = customerInfo.split(",");
 						cust_info.put(cust[0],cust[3]);
 					}
-				} catch (IOException ioe) {
-			         System.err.println("Caught exception while parsing the cached file '"  + "' : " );
-			    }
-		   }
+				}
+				catch (IOException ioe) {
+			                System.err.println("Caught exception while parsing the cached file '"  + "' : " );
+			        }
+			}
+		}
        }
 	 	
-		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException{
+		public void map(LongWritable key, Text value, OutputCollector<IntWritable, Text> output, Reporter reporter) 
+		throws IOException{
 				String [] record = value.toString().split(",");
 				int ccode = Integer.parseInt(cust_info.get(record[1].toString()));
 				IntWritable output_key = new IntWritable(ccode);
@@ -58,7 +61,8 @@ public class query4_1{
 	
 	
 	public static class Reduce extends MapReduceBase implements Reducer<IntWritable, Text, IntWritable, Text> {
-		public void reduce(IntWritable key, Iterator<Text> values, OutputCollector<IntWritable, Text> output, Reporter reporter) throws IOException {
+		public void reduce(IntWritable key, Iterator<Text> values, OutputCollector<IntWritable, Text> output, 
+		Reporter reporter) throws IOException {
 			 float TransTotal = 0.0f;
 			 float MinTransTotal=1000f;
 			 float MaxTransTotal=10f;
@@ -106,7 +110,7 @@ public class query4_1{
 		 
 		 JobClient.runJob(conf);
 
-		 }
+	}
 }
 
 		
